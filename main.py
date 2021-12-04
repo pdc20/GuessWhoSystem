@@ -121,9 +121,19 @@ class MainApp(QApplication):
         self.backendWindow.dataUpdateButton.clicked.connect(self.dataUpdateButtonClicked)
         self.backendWindow.nicknameCombo.activated.connect(self.nicknameComboActivated)
         self.displayWindow.checkButton.clicked.connect(self.checkButtonClicked)
+        self.backendWindow.credentialsBrowseButton.clicked.connect(self.credentialsBrowseButtonClicked)
+        self.backendWindow.streamDirectoryBrowseButton.clicked.connect(self.streamDirectoryBrowseButtonClicked)
 
         if debug:
             self.performDebugOperations()
+
+    def credentialsBrowseButtonClicked(self):
+        directory = str(QFileDialog.getExistingDirectory(None, "Select Folder"))
+        self.backendWindow.credentialsLine.setText(directory)
+
+    def streamDirectoryBrowseButtonClicked(self):
+        directory = str(QFileDialog.getExistingDirectory(None, "Select Folder"))
+        self.backendWindow.streamDirectoryLine.setText(directory)
 
     def checkButtonClicked(self):
         # First ensure that all the comboboxes are not on index 0 (Select...)
