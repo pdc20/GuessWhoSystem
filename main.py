@@ -134,19 +134,62 @@ class MainApp(QApplication):
         self.backendWindow.streamDirectoryBrowseButton.clicked.connect(self.streamDirectoryBrowseButtonClicked)
         self.displayWindow.recordGuessButton.clicked.connect(self.recordGuessButtonClicked)
         self.displayWindow.checkerClearButton.clicked.connect(self.checkerClearButtonClicked)
+        self.displayWindow.scoresResetButton.clicked.connect(self.scoresResetButtonClicked)
+        self.displayWindow.scoresUpdateButton.clicked.connect(self.scoresUpdateButtonClicked)
 
         self.displayWindow.guesserCombo.currentIndexChanged.connect(self.checkerComboChanged)
         self.displayWindow.checkerNicknameCombo.currentIndexChanged.connect(self.checkerComboChanged)
         self.displayWindow.checkerPlayerNameCombo.currentIndexChanged.connect(self.checkerComboChanged)
+
+        self.displayWindow.scoresP1Combo.currentIndexChanged.connect(self.scoreboardChanged)
+        self.displayWindow.scoresP2Combo.currentIndexChanged.connect(self.scoreboardChanged)
+        self.displayWindow.scoresP1Spin.valueChanged.connect(self.scoreboardChanged)
+        self.displayWindow.scoresP2Spin.valueChanged.connect(self.scoreboardChanged)
 
         # Other things to do
         self.displayWindow.recordGuessButton.setEnabled(False)
         self.displayWindow.checkButton.setEnabled(False)
         self.displayWindow.checkerVerdictLabel.setText("...")
 
+        self.dataUpdateButtonClicked() # Initialise the files for the stream.
+
         # Debug operations
         if debug:
             self.performDebugOperations()
+
+    def scoreboardChanged(self):
+        self.displayWindow.scoresUnsavedChangesLabel.setText("Unsaved Changes!")
+
+    def scoresUpdateButtonClicked(self):
+        p1NickFile = open(f"{self.streamDirectory}\\p1Nick.txt", "w")
+        p2NickFile = open(f"{self.streamDirectory}\\p2Nick.txt", "w")
+        p1ScoreFile = open(f"{self.streamDirectory}\\p1Score.txt", "w")
+        p2ScoreFile = open(f"{self.streamDirectory}\\p2Score.txt", "w")
+
+        if self.displayWindow.scoresP1Combo.currentIndex() == 0: p1NickFile.write("-")
+        else: p1NickFile.write(self.displayWindow.scoresP1Combo.currentText())
+
+        if self.displayWindow.scoresP2Combo.currentIndex() == 0: p2NickFile.write("-")
+        else: p2NickFile.write(self.displayWindow.scoresP2Combo.currentText())
+
+        p1ScoreFile.write(str(self.displayWindow.scoresP1Spin.value()))
+        p2ScoreFile.write(str(self.displayWindow.scoresP2Spin.value()))
+
+        p1NickFile.close()
+        p2NickFile.close()
+        p1ScoreFile.close()
+        p2ScoreFile.close()
+
+        self.displayWindow.scoresUnsavedChangesLabel.setText("")
+
+
+    def scoresResetButtonClicked(self):
+        self.displayWindow.scoresP1Combo.setCurrentIndex(0)
+        self.displayWindow.scoresP2Combo.setCurrentIndex(0)
+        self.displayWindow.scoresP1Spin.setValue(0)
+        self.displayWindow.scoresP2Spin.setValue(0)
+
+        self.displayWindow.scoresUnsavedChangesLabel.setText("Unsaved Changes!")
 
     def checkerComboChanged(self):
         if not self.displayWindow.areComboBoxesEmpty():
@@ -241,6 +284,9 @@ class MainApp(QApplication):
         self.loadCombo(self.backendWindow.nicknameCombo, [player.nickname for player in self.players])
         self.loadCombo(self.displayWindow.guesserCombo, [player.nickname for player in self.players])
         self.loadCombo(self.displayWindow.checkerNicknameCombo, [player.nickname for player in self.players])
+        self.loadCombo(self.displayWindow.scoresP1Combo, [player.nickname for player in self.players])
+        self.loadCombo(self.displayWindow.scoresP2Combo, [player.nickname for player in self.players])
+        self.scoresUpdateButtonClicked()
 
         l = [player.handle for player in self.players]
         shuffle(l)
