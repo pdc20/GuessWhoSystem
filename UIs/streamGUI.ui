@@ -161,11 +161,25 @@
               <widget class="QComboBox" name="checkerPlayerNameCombo"/>
              </item>
              <item row="3" column="1">
-              <widget class="QPushButton" name="checkButton">
-               <property name="text">
-                <string>Check!</string>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <property name="spacing">
+                <number>7</number>
                </property>
-              </widget>
+               <item>
+                <widget class="QPushButton" name="checkButton">
+                 <property name="text">
+                  <string>Check!</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="checkerClearButton">
+                 <property name="text">
+                  <string>Clear</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item row="4" column="0">
               <widget class="QLabel" name="label_5">
@@ -206,6 +220,9 @@
               <spacer name="verticalSpacer_2">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
