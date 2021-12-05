@@ -110,7 +110,7 @@ class Player:
         self.playHistory = []
 
     def addGuess(self, guessedPlayer, guessedIdentityString):
-        entry = Player.PlayerLogEntry(self.nickname, guessedPlayer, guessedIdentityString)
+        entry = Player.PlayerLogEntry(self, guessedPlayer, guessedIdentityString)
         self.playHistory.append(entry)
 
         # If we have a wrong guess, then we decrease the number of lives.
@@ -253,9 +253,8 @@ class MainApp(QApplication):
 
     def nicknameComboActivated(self):
         index = self.backendWindow.nicknameCombo.currentIndex()
-        if index == 0:
-            self.backendWindow.clearPlayerSettingsFields()
-            return
+        self.backendWindow.clearPlayerSettingsFields()
+        if index == 0: return
         player = self.players[index - 1]
         self.backendWindow.playerBox.setText(player.handle)
         self.backendWindow.livesLeftBox.setText(f"{player.lives}")
