@@ -6,3 +6,5 @@ The data can then be manipulated and displayed in a readable manner as the tourn
 
 The system uses the PyQt5 GUI framework which means that the system is cross-platform. It also uses the Google Sheets 
 API for Python.
+
+It is currently WIP and we aim to finish this ASAP.
